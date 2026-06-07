@@ -682,7 +682,7 @@
         <div class="loading-title">Building Your Report</div>
         <div class="loading-sub">Analyzing your answers across all six dimensions of business readiness.</div>
         <div class="loading-steps" id="loadingSteps"></div>
-        <div id="debugLog" style="margin-top:24px;text-align:left;font-size:11px;color:rgba(255,255,255,0.4);font-family:monospace;max-height:120px;overflow-y:auto;"></div>
+        <div id="debugLog" style="margin-top:24px;text-align:left;font-size:13px;color:rgba(255,255,180,0.9);font-family:monospace;max-height:200px;overflow-y:auto;background:rgba(0,0,0,0.3);padding:12px;border-radius:8px;min-height:40px;"></div>
       </div>
     </div>
 
@@ -874,7 +874,7 @@ async function submitForm() {
     ]).catch(err => dbg(`Sync error: ${err.message}`));
   }
 
-  await new Promise(resolve => setTimeout(resolve, 2000));
+  await new Promise(resolve => setTimeout(resolve, 15000));
 
   const reportText = report || 'Report generation failed.';
   const encoded = encodeURIComponent(btoa(unescape(encodeURIComponent(reportText))));
