@@ -682,6 +682,7 @@
         <div class="loading-title">Building Your Report</div>
         <div class="loading-sub">Analyzing your answers across all six dimensions of business readiness.</div>
         <div class="loading-steps" id="loadingSteps"></div>
+        <div id="debugLog" style="margin-top:24px;text-align:left;font-size:11px;color:rgba(255,255,255,0.4);font-family:monospace;max-height:120px;overflow-y:auto;"></div>
       </div>
     </div>
 
@@ -840,6 +841,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+// Debug logger
+function dbg(msg) {
+  console.log(msg);
+  const el = document.getElementById('debugLog');
+  if (el) el.innerHTML += `<div>${new Date().toISOString().slice(11,19)} ${msg}</div>`;
+}
+
 // ============================================================
 // SUBMIT
 // ============================================================
@@ -850,20 +858,23 @@ async function submitForm() {
   let report = null;
 
   try {
+    dbg('Calling Gemini...');
     report = await generateReport();
+    dbg(report ? `Report OK (${report.length} chars)` : 'Report null');
   } catch (err) {
+    dbg(`ERROR: ${err.message}`);
     console.error('Report generation error:', err);
   }
 
   if (report) {
-    // Fire email and ClickUp in background — do not wait
+    dbg('Sending email + ClickUp sync...');
     Promise.all([
       sendReportEmail(report),
       syncToClickUp(report)
-    ]).catch(err => console.warn('Background sync error:', err));
+    ]).catch(err => dbg(`Sync error: ${err.message}`));
   }
 
-  await new Promise(resolve => setTimeout(resolve, 1500));
+  await new Promise(resolve => setTimeout(resolve, 2000));
 
   const reportText = report || 'Report generation failed.';
   const encoded = encodeURIComponent(btoa(unescape(encodeURIComponent(reportText))));
@@ -894,6 +905,7 @@ function animateLoadingSteps() {
 // ============================================================
 async function generateReport() {
   const prompt = buildPrompt();
+  dbg('Sending to Gemini API...');
 
   const fetchPromise = fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${CONFIG.GEMINI_MODEL}:generateContent?key=${CONFIG.GEMINI_API_KEY}`,
@@ -908,17 +920,18 @@ async function generateReport() {
   );
 
   const timeoutPromise = new Promise((_, reject) =>
-    setTimeout(() => reject(new Error('Timed out')), 30000)
+    setTimeout(() => reject(new Error('Timed out after 30s')), 30000)
   );
 
   const res = await Promise.race([fetchPromise, timeoutPromise]);
+  dbg(`Gemini HTTP status: ${res.status}`);
   const data = await res.json();
 
   if (data?.candidates?.[0]?.content?.parts?.[0]?.text) {
     return data.candidates[0].content.parts[0].text;
   }
 
-  console.error('Gemini response:', JSON.stringify(data));
+  dbg(`Gemini error: ${JSON.stringify(data).slice(0,200)}`);
   return null;
 }
 
