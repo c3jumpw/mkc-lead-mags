@@ -693,9 +693,10 @@
 // CONFIG
 // ============================================================
 const CONFIG = {
+  GEMINI_API_KEY: 'AIzaSyApm0toNyf0xJ0zfZcfWJAT6Pim4gHnTv4',
+  GEMINI_MODEL: 'gemini-1.5-flash',
   WORKER_URL: 'https://rrt-api.c3-jumpw.workers.dev',
-  THANK_YOU_URL: 'https://tools.brandcraftsman.mambayk.com/bcm-revenue-readiness-test/report-display.html',
-  GEMINI_MODEL: 'gemini-1.5-flash'
+  THANK_YOU_URL: 'https://tools.brandcraftsman.mambayk.com/bcm-revenue-readiness-test/report-display.html'
 };
 
 // ============================================================
@@ -846,27 +847,26 @@ async function submitForm() {
   answers['q15'] = document.getElementById('q15').value.trim();
   showSlide(17);
   animateLoadingSteps();
-  let report = '';
+  let report = null;
 
   try {
-    // Generate report first — wait for it fully
     report = await generateReport();
+  } catch (err) {
+    console.error('Report generation error:', err);
+  }
 
-    // Then fire email and ClickUp in parallel (non-blocking)
+  if (report) {
+    // Fire email and ClickUp in background — do not wait
     Promise.all([
       sendReportEmail(report),
       syncToClickUp(report)
     ]).catch(err => console.warn('Background sync error:', err));
-
-  } catch (err) {
-    console.error('Report generation error:', err);
-    // Still redirect even if generation fails — report will be empty
   }
 
-  // Small delay for loading animation to feel complete, then redirect
   await new Promise(resolve => setTimeout(resolve, 1500));
 
-  const encoded = encodeURIComponent(btoa(unescape(encodeURIComponent(report || 'Report generation failed.'))));
+  const reportText = report || 'Report generation failed.';
+  const encoded = encodeURIComponent(btoa(unescape(encodeURIComponent(reportText))));
   const name = encodeURIComponent(answers.firstName || '');
   window.location.href = `${CONFIG.THANK_YOU_URL}?r=${encoded}&n=${name}`;
 }
@@ -890,25 +890,36 @@ function animateLoadingSteps() {
 }
 
 // ============================================================
-// REPORT GENERATION via Worker
+// REPORT GENERATION — direct Gemini call from browser
 // ============================================================
 async function generateReport() {
   const prompt = buildPrompt();
 
-  // Race between fetch and a 25-second timeout
-  const fetchPromise = fetch(`${CONFIG.WORKER_URL}/generate-report`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ prompt })
-  });
+  const fetchPromise = fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${CONFIG.GEMINI_MODEL}:generateContent?key=${CONFIG.GEMINI_API_KEY}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { temperature: 0.7, maxOutputTokens: 2000 }
+      })
+    }
+  );
 
   const timeoutPromise = new Promise((_, reject) =>
-    setTimeout(() => reject(new Error('Report generation timed out')), 25000)
+    setTimeout(() => reject(new Error('Timed out')), 30000)
   );
 
   const res = await Promise.race([fetchPromise, timeoutPromise]);
   const data = await res.json();
-  return data.report || 'Report generation failed.';
+
+  if (data?.candidates?.[0]?.content?.parts?.[0]?.text) {
+    return data.candidates[0].content.parts[0].text;
+  }
+
+  console.error('Gemini response:', JSON.stringify(data));
+  return null;
 }
 
 function buildPrompt() {
