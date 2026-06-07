@@ -1,1 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Revenue Readiness Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f4f6fb;
+    color: #0f1f38;
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* HERO HEADER */
+  .report-hero {
+    background: linear-gradient(135deg, #0a1628 0%, #0f1f38 50%, #162a4a 100%);
+    padding: 56px 24px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .report-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 60% 30%, rgba(37,99,235,0.15) 0%, transparent 60%);
+  }
+  .hero-label {
+    font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: #8a9ab5; margin-bottom: 16px; position: relative;
+  }
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px; font-weight: 700; color: #fff;
+    margin-bottom: 8px; position: relative;
+  }
+  .hero-sub {
+    font-size: 16px; color: #c8d4e8; position: relative;
+    max-width: 480px; margin: 0 auto;
+  }
+
+  /* SCORE BADGE */
+  .score-section {
+    background: #fff;
+    border-bottom: 1px solid #e8ecf4;
+    padding: 40px 24px;
+    text-align: center;
+  }
+  .score-ring-wrap {
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    background: conic-gradient(#2563eb var(--pct), #e8ecf4 0deg);
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .score-ring-inner {
+    width: 110px; height: 110px;
+    border-radius: 50%; background: #fff;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+  .score-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px; font-weight: 700; color: #0f1f38;
+    line-height: 1;
+  }
+  .score-denom { font-size: 13px; color: #8a9ab5; }
+  .score-label {
+    display: inline-block;
+    background: #eff6ff; color: #2563eb;
+    font-size: 13px; font-weight: 600;
+    padding: 6px 18px; border-radius: 20px;
+    border: 1px solid #bfdbfe;
+    margin-bottom: 8px;
+  }
+  .score-desc { font-size: 14px; color: #6b7280; max-width: 400px; margin: 0 auto; }
+
+  /* MAIN CONTENT */
+  .report-body {
+    max-width: 760px; margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* SECTION CARDS */
+  .report-card {
+    background: #fff;
+    border: 1px solid #e8ecf4;
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(15,31,56,0.06);
+  }
+  .card-label {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: #2563eb; font-weight: 600; margin-bottom: 8px;
+  }
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-weight: 600; color: #0f1f38;
+    margin-bottom: 16px;
+  }
+  .card-body {
+    font-size: 15px; line-height: 1.75; color: #374151;
+  }
+  .card-body p { margin-bottom: 12px; }
+  .card-body p:last-child { margin-bottom: 0; }
+
+  /* DIMENSION BARS */
+  .dim-grid {
+    display: grid; gap: 16px;
+  }
+  .dim-item {}
+  .dim-header {
+    display: flex; justify-content: space-between;
+    align-items: center; margin-bottom: 8px;
+  }
+  .dim-name { font-size: 14px; font-weight: 600; color: #0f1f38; }
+  .dim-score { font-size: 14px; color: #2563eb; font-weight: 600; }
+  .dim-bar-bg {
+    height: 8px; background: #f1f5f9; border-radius: 4px; overflow: hidden;
+  }
+  .dim-bar-fill {
+    height: 100%; border-radius: 4px;
+    background: linear-gradient(90deg, #2563eb, #3b82f6);
+    transition: width 1.2s cubic-bezier(0.22,1,0.36,1);
+  }
+  .dim-text { font-size: 13px; color: #6b7280; margin-top: 8px; line-height: 1.5; }
+
+  /* PROFILE CARD */
+  .profile-card {
+    background: linear-gradient(135deg, #0f1f38 0%, #162a4a 100%);
+    color: #fff; border: none;
+  }
+  .profile-card .card-label { color: #60a5fa; }
+  .profile-card .card-title { color: #fff; }
+  .profile-card .card-body { color: #c8d4e8; }
+  .profile-name {
+    display: inline-block;
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 700; color: #fff;
+    background: rgba(37,99,235,0.3);
+    border: 1px solid rgba(59,130,246,0.4);
+    padding: 8px 20px; border-radius: 8px;
+    margin-bottom: 16px;
+  }
+
+  /* LEVERAGE CARD */
+  .leverage-card {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+  }
+  .leverage-card .card-label { color: #1d4ed8; }
+  .leverage-card .card-title { color: #1e3a8a; }
+  .leverage-card .card-body { color: #1e40af; }
+
+  /* HOLDING BACK */
+  .holding-card {
+    border-left: 4px solid #f59e0b;
+  }
+  .root-cause {
+    display: flex; gap: 12px; margin-bottom: 14px;
+    padding-bottom: 14px; border-bottom: 1px solid #f3f4f6;
+  }
+  .root-cause:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .root-num {
+    width: 24px; height: 24px; min-width: 24px;
+    border-radius: 50%; background: #fef3c7;
+    color: #92400e; font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .root-text { font-size: 14px; color: #374151; line-height: 1.6; }
+
+  /* CTA SECTION */
+  .cta-section {
+    background: linear-gradient(135deg, #0f1f38 0%, #1e3a8a 100%);
+    border-radius: 16px; padding: 40px 32px;
+    text-align: center; margin-top: 32px;
+  }
+  .cta-label {
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: #60a5fa; margin-bottom: 12px;
+  }
+  .cta-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px; color: #fff; margin-bottom: 12px;
+  }
+  .cta-body { font-size: 15px; color: #c8d4e8; margin-bottom: 28px; line-height: 1.7; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .cta-btn {
+    display: inline-block;
+    background: #2563eb; color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px; font-weight: 600;
+    padding: 16px 40px; border-radius: 12px;
+    text-decoration: none;
+    box-shadow: 0 8px 24px rgba(37,99,235,0.4);
+    transition: all 0.3s ease;
+    margin-bottom: 12px;
+    display: block; max-width: 340px; margin: 0 auto 12px;
+  }
+  .cta-btn:hover { background: #1d4ed8; transform: translateY(-2px); }
+  .cta-note { font-size: 13px; color: #8a9ab5; margin-top: 12px; }
+
+  /* EMAIL REMINDER */
+  .email-reminder {
+    background: #f0fdf4; border: 1px solid #bbf7d0;
+    border-radius: 12px; padding: 16px 20px;
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 24px;
+  }
+  .email-icon { font-size: 20px; }
+  .email-text { font-size: 14px; color: #166534; line-height: 1.5; }
+
+  /* LOADING STATE */
+  .loading-state {
+    text-align: center; padding: 80px 24px;
+  }
+  .loading-spinner {
+    width: 48px; height: 48px; border: 3px solid #e8ecf4;
+    border-top-color: #2563eb; border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 20px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ERROR STATE */
+  .error-state {
+    text-align: center; padding: 60px 24px;
+    display: none;
+  }
+
+  /* FOOTER */
+  .report-footer {
+    text-align: center; padding: 24px;
+    font-size: 12px; color: #9ca3af;
+    border-top: 1px solid #e8ecf4;
+    background: #fff;
+  }
+
+  @media (max-width: 640px) {
+    .hero-name { font-size: 28px; }
+    .report-card { padding: 24px; }
+    .cta-section { padding: 32px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="report-hero">
+  <div class="hero-label">Brand Craftsman — Revenue Readiness Test</div>
+  <div class="hero-name" id="heroName">Your Report Is Ready</div>
+  <div class="hero-sub">Everything below is based specifically on your answers.</div>
+</div>
+
+<!-- LOADING STATE -->
+<div id="loadingState" class="loading-state">
+  <div class="loading-spinner"></div>
+  <div style="font-size:16px;color:#6b7280;">Loading your report...</div>
+</div>
+
+<!-- ERROR STATE -->
+<div id="errorState" class="error-state">
+  <div style="font-size:48px;margin-bottom:16px;">📋</div>
+  <div style="font-size:20px;font-weight:600;color:#0f1f38;margin-bottom:8px;">Report Not Found</div>
+  <div style="font-size:15px;color:#6b7280;margin-bottom:24px;">Your report was emailed to you. Please check your inbox.</div>
+</div>
+
+<!-- REPORT CONTENT -->
+<div id="reportContent" style="display:none;">
+
+  <!-- SCORE -->
+  <div class="score-section">
+    <div class="score-ring-wrap" id="scoreRing" style="--pct: 0deg;">
+      <div class="score-ring-inner">
+        <div class="score-number" id="scoreNumber">--</div>
+        <div class="score-denom">/100</div>
+      </div>
+    </div>
+    <br>
+    <div class="score-label" id="scoreLabel">Loading...</div>
+    <br>
+    <div class="score-desc">Your personalized Revenue Readiness Report is below. Read through fully before taking any action.</div>
+  </div>
+
+  <div class="report-body">
+
+    <!-- EMAIL REMINDER -->
+    <div class="email-reminder">
+      <div class="email-icon">✉️</div>
+      <div class="email-text">A copy of this report has been sent to your inbox. Check your email in the next few minutes.</div>
+    </div>
+
+    <!-- BUSINESS SNAPSHOT -->
+    <div class="report-card" id="snapshotCard">
+      <div class="card-label">Business Snapshot</div>
+      <div class="card-title">Where You Are Right Now</div>
+      <div class="card-body" id="snapshotText"></div>
+    </div>
+
+    <!-- DIMENSION BREAKDOWN -->
+    <div class="report-card" id="dimensionsCard">
+      <div class="card-label">Your Readiness Breakdown</div>
+      <div class="card-title">How You Score Across Each Area</div>
+      <div class="dim-grid" id="dimensionGrid"></div>
+    </div>
+
+    <!-- GROWTH PROFILE -->
+    <div class="report-card profile-card" id="profileCard">
+      <div class="card-label">Your Growth Profile</div>
+      <div class="profile-name" id="profileName"></div>
+      <div class="card-body" id="profileText"></div>
+    </div>
+
+    <!-- LEVERAGE POINT -->
+    <div class="report-card leverage-card" id="leverageCard">
+      <div class="card-label">Your Biggest Leverage Point</div>
+      <div class="card-title">Where to Focus First</div>
+      <div class="card-body" id="leverageText"></div>
+    </div>
+
+    <!-- HOLDING BACK -->
+    <div class="report-card holding-card" id="holdingCard">
+      <div class="card-label">What's Likely Holding You Back</div>
+      <div class="card-title">The Root Causes</div>
+      <div id="holdingText"></div>
+    </div>
+
+    <!-- NEXT STEP -->
+    <div class="report-card" id="nextStepCard">
+      <div class="card-label">Your Next Step</div>
+      <div class="card-title">What Happens From Here</div>
+      <div class="card-body" id="nextStepText"></div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-section">
+      <div class="cta-label">Ready to Go Deeper?</div>
+      <div class="cta-title">Let's Talk Through What This Means for Your Business</div>
+      <div class="cta-body">The report gives you the picture. The session is where we go deeper into the root causes, the sequence, and the exact moves that make sense for where you're standing right now.</div>
+      <a href="https://brandcraftsman.mambayk.com" class="cta-btn">Book My Free Revenue Readiness Session</a>
+      <div class="cta-note">Limited spots available. No pitch. No pressure. Just clarity on your next move.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="report-footer">
+  © 2026 Mambay, LLC. All Rights Reserved — Brand Craftsman
+</div>
+
+<script>
+// ============================================================
+// PARSE REPORT FROM URL
+// ============================================================
+function getParam(name) {
+  const url = new URL(window.location.href);
+  return url.searchParams.get(name);
+}
+
+function decodeReport(encoded) {
+  try {
+    return decodeURIComponent(escape(atob(encoded)));
+  } catch(e) {
+    return null;
+  }
+}
+
+// ============================================================
+// PARSE REPORT TEXT INTO SECTIONS
+// ============================================================
+function parseReport(text) {
+  const sections = {};
+
+  // Extract score
+  const scoreMatch = text.match(/YOUR SCORE[:\s]+(\d+)\/100[^\n]*—?\s*([^\n]+)/i);
+  if (scoreMatch) {
+    sections.score = parseInt(scoreMatch[1]);
+    sections.scoreLabel = scoreMatch[2].trim();
+  }
+
+  // Extract each section by header
+  const sectionMap = [
+    { key: 'snapshot',  start: 'BUSINESS SNAPSHOT',         end: 'YOUR DIMENSION BREAKDOWN' },
+    { key: 'dimensions', start: 'YOUR DIMENSION BREAKDOWN',  end: 'YOUR GROWTH PROFILE' },
+    { key: 'profile',   start: 'YOUR GROWTH PROFILE',       end: 'YOUR BIGGEST LEVERAGE POINT' },
+    { key: 'leverage',  start: 'YOUR BIGGEST LEVERAGE POINT', end: "WHAT'S LIKELY HOLDING YOU BACK" },
+    { key: 'holding',   start: "WHAT'S LIKELY HOLDING YOU BACK", end: 'YOUR NEXT STEP' },
+    { key: 'nextStep',  start: 'YOUR NEXT STEP',             end: '---' }
+  ];
+
+  sectionMap.forEach(({ key, start, end }) => {
+    const startIdx = text.toUpperCase().indexOf(start.toUpperCase());
+    const endIdx = end ? text.toUpperCase().indexOf(end.toUpperCase(), startIdx + start.length) : text.length;
+    if (startIdx !== -1) {
+      let content = text.substring(startIdx + start.length, endIdx !== -1 ? endIdx : text.length);
+      content = content.replace(/^[\s\n:]+/, '').trim();
+      sections[key] = content;
+    }
+  });
+
+  // Parse dimension scores from dimensions section
+  if (sections.dimensions) {
+    const dimLines = sections.dimensions.split('\n').filter(l => l.trim());
+    sections.dimData = [];
+    const dimNames = [
+      'Lead Generation and Market Clarity',
+      'Sales and Conversion',
+      'Operations and Systems',
+      'Business Model Clarity'
+    ];
+    dimNames.forEach(name => {
+      const regex = new RegExp(name + '[:\\s]+([\\d.]+)\\/5', 'i');
+      const match = sections.dimensions.match(regex);
+      if (match) {
+        // Extract insight text after the score line
+        const scoreLineIdx = sections.dimensions.indexOf(match[0]);
+        const afterScore = sections.dimensions.substring(scoreLineIdx + match[0].length);
+        const nextDimIdx = dimNames
+          .filter(n => n !== name)
+          .map(n => afterScore.toUpperCase().indexOf(n.toUpperCase()))
+          .filter(i => i > 0)
+          .sort((a,b) => a-b)[0];
+        const insight = afterScore.substring(0, nextDimIdx || 200).replace(/^[\s\n]+/, '').trim();
+        sections.dimData.push({
+          name,
+          score: parseFloat(match[1]),
+          insight: insight.substring(0, 300)
+        });
+      }
+    });
+  }
+
+  // Extract profile name
+  if (sections.profile) {
+    const profileNames = ['The Visionary','The Grinder','The Plateauer','The Operator','The Scaler','The Builder'];
+    profileNames.forEach(p => {
+      if (sections.profile.includes(p)) sections.profileName = p;
+    });
+  }
+
+  return sections;
+}
+
+// ============================================================
+// RENDER REPORT
+// ============================================================
+function renderReport(text, firstName) {
+  const s = parseReport(text);
+
+  // Update hero
+  if (firstName) {
+    document.getElementById('heroName').textContent = `${firstName}, Your Report Is Ready`;
+  }
+
+  // Score ring
+  if (s.score) {
+    const deg = Math.round((s.score / 100) * 360);
+    document.getElementById('scoreRing').style.setProperty('--pct', `${deg}deg`);
+    document.getElementById('scoreNumber').textContent = s.score;
+    document.getElementById('scoreLabel').textContent = s.scoreLabel || getScoreLabel(s.score);
+  }
+
+  // Snapshot
+  if (s.snapshot) {
+    document.getElementById('snapshotText').innerHTML = formatParagraphs(s.snapshot);
+  }
+
+  // Dimensions
+  if (s.dimData && s.dimData.length) {
+    const grid = document.getElementById('dimensionGrid');
+    grid.innerHTML = '';
+    s.dimData.forEach(dim => {
+      const pct = Math.round((dim.score / 5) * 100);
+      grid.innerHTML += `
+        <div class="dim-item">
+          <div class="dim-header">
+            <div class="dim-name">${dim.name}</div>
+            <div class="dim-score">${dim.score}/5</div>
+          </div>
+          <div class="dim-bar-bg">
+            <div class="dim-bar-fill" style="width:${pct}%"></div>
+          </div>
+          ${dim.insight ? `<div class="dim-text">${dim.insight}</div>` : ''}
+        </div>`;
+    });
+  }
+
+  // Profile
+  if (s.profileName) {
+    document.getElementById('profileName').textContent = s.profileName;
+  }
+  if (s.profile) {
+    const profileText = s.profile.replace(s.profileName || '', '').trim();
+    document.getElementById('profileText').innerHTML = formatParagraphs(profileText);
+  }
+
+  // Leverage
+  if (s.leverage) {
+    document.getElementById('leverageText').innerHTML = formatParagraphs(s.leverage);
+  }
+
+  // Holding back — split into numbered items
+  if (s.holding) {
+    const lines = s.holding.split('\n').filter(l => l.trim().length > 20);
+    const wrap = document.getElementById('holdingText');
+    wrap.innerHTML = '';
+    lines.slice(0, 3).forEach((line, i) => {
+      wrap.innerHTML += `
+        <div class="root-cause">
+          <div class="root-num">${i+1}</div>
+          <div class="root-text">${line.replace(/^\d+[\.\)]\s*/, '').trim()}</div>
+        </div>`;
+    });
+    if (!lines.length) {
+      wrap.innerHTML = `<div class="card-body">${formatParagraphs(s.holding)}</div>`;
+    }
+  }
+
+  // Next step
+  if (s.nextStep) {
+    document.getElementById('nextStepText').innerHTML = formatParagraphs(s.nextStep);
+  }
+
+  // Show content
+  document.getElementById('loadingState').style.display = 'none';
+  document.getElementById('reportContent').style.display = 'block';
+}
+
+function formatParagraphs(text) {
+  return text.split('\n')
+    .filter(l => l.trim())
+    .map(l => `<p>${l.trim()}</p>`)
+    .join('');
+}
+
+function getScoreLabel(score) {
+  if (score <= 30) return 'Foundation Stage';
+  if (score <= 55) return 'Building Stage';
+  if (score <= 75) return 'Growth Ready';
+  if (score <= 90) return 'Scale Ready';
+  return 'Optimization Stage';
+}
+
+// ============================================================
+// INIT
+// ============================================================
+window.onload = () => {
+  const encoded = getParam('r');
+  const name = getParam('n') ? decodeURIComponent(getParam('n')) : '';
+
+  if (!encoded) {
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('errorState').style.display = 'block';
+    return;
+  }
+
+  const report = decodeReport(encoded);
+  if (!report) {
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('errorState').style.display = 'block';
+    return;
+  }
+
+  renderReport(report, name);
+};
+</script>
+</body>
+</html>
