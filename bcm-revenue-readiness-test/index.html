@@ -859,8 +859,9 @@ async function submitForm() {
   answers['q15'] = document.getElementById('q15').value.trim();
   showSlide(17);
   animateLoadingSteps();
+  let report = '';
   try {
-    const report = await generateReport();
+    report = await generateReport();
     await Promise.all([
       sendReportEmail(report),
       syncToClickUp(report)
@@ -868,8 +869,11 @@ async function submitForm() {
   } catch (err) {
     console.error('Submission error:', err);
   }
+  // Pass report and first name to thank you page via URL
   setTimeout(() => {
-    window.location.href = CONFIG.THANK_YOU_URL;
+    const encoded = encodeURIComponent(btoa(unescape(encodeURIComponent(report))));
+    const name = encodeURIComponent(answers.firstName || '');
+    window.location.href = `${CONFIG.THANK_YOU_URL}?r=${encoded}&n=${name}`;
   }, 3000);
 }
 
