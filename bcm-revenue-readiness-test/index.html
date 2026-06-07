@@ -847,21 +847,28 @@ async function submitForm() {
   showSlide(17);
   animateLoadingSteps();
   let report = '';
+
   try {
+    // Generate report first — wait for it fully
     report = await generateReport();
-    await Promise.all([
+
+    // Then fire email and ClickUp in parallel (non-blocking)
+    Promise.all([
       sendReportEmail(report),
       syncToClickUp(report)
-    ]);
+    ]).catch(err => console.warn('Background sync error:', err));
+
   } catch (err) {
-    console.error('Submission error:', err);
+    console.error('Report generation error:', err);
+    // Still redirect even if generation fails — report will be empty
   }
-  // Pass report and first name to thank you page via URL
-  setTimeout(() => {
-    const encoded = encodeURIComponent(btoa(unescape(encodeURIComponent(report))));
-    const name = encodeURIComponent(answers.firstName || '');
-    window.location.href = `${CONFIG.THANK_YOU_URL}?r=${encoded}&n=${name}`;
-  }, 3000);
+
+  // Small delay for loading animation to feel complete, then redirect
+  await new Promise(resolve => setTimeout(resolve, 1500));
+
+  const encoded = encodeURIComponent(btoa(unescape(encodeURIComponent(report || 'Report generation failed.'))));
+  const name = encodeURIComponent(answers.firstName || '');
+  window.location.href = `${CONFIG.THANK_YOU_URL}?r=${encoded}&n=${name}`;
 }
 
 function animateLoadingSteps() {
@@ -887,11 +894,19 @@ function animateLoadingSteps() {
 // ============================================================
 async function generateReport() {
   const prompt = buildPrompt();
-  const res = await fetch(`${CONFIG.WORKER_URL}/generate-report`, {
+
+  // Race between fetch and a 25-second timeout
+  const fetchPromise = fetch(`${CONFIG.WORKER_URL}/generate-report`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ prompt })
   });
+
+  const timeoutPromise = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error('Report generation timed out')), 25000)
+  );
+
+  const res = await Promise.race([fetchPromise, timeoutPromise]);
   const data = await res.json();
   return data.report || 'Report generation failed.';
 }
