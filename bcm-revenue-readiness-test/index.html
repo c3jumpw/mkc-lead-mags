@@ -693,22 +693,9 @@
 // CONFIG
 // ============================================================
 const CONFIG = {
-  GEMINI_API_KEY: 'AIzaSyApm0toNyf0xJ0zfZcfWJAT6Pim4gHnTv4',
-  SENDGRID_API_KEY: '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',
-  GOOGLE_SHEET_ID: '1w1os7t-OOutiZHtt00jtNkJTH-PgJlGVPHISqr0y_Kw',
-  GOOGLE_SHEET_TAB: 'Master CRM Entries',
-  GOOGLE_EMAIL_COL: 6,   // Column G = index 6 (0-based)
-  GOOGLE_ID_COL: 0,      // Column A = index 0
-  CLICKUP_API_TOKEN: 'pk_43609696_KQTIW3GY2DYU9SIW9CE8UTLOTRHEQ3VV',
-  CLICKUP_LEADS_LIST_ID: '901710477809',
-  CLICKUP_CONTACTS_LIST_ID: '901710477009',
-  SENDGRID_FROM_EMAIL: 'grow@brandcraftsman.mambayk.com',
-  SENDGRID_FROM_NAME: 'Mambay | Brand Craftsman',
+  WORKER_URL: 'https://rrt-api.c3jumpw.workers.dev',
   THANK_YOU_URL: 'https://tools.brandcraftsman.mambayk.com/bcm-revenue-readiness-test/report-display.html',
-  GEMINI_MODEL: 'gemini-1.5-flash',
-  // Service account credentials for signed JWT auth (browser-safe)
-  SA_CLIENT_EMAIL: 'sheets-reader@gen-lang-client-0286055899.iam.gserviceaccount.com',
-  SA_PRIVATE_KEY: '-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDJ9FjUSnD2ICe8\nLHC/vkhORd5aaEVE4yoKZOb0Nwt6GYUxG5iji/Z2KWo1AKGXwDGaYYzhVGHMpg6S\nvVdRkFP+Y6FfWg4s/VQqrioWuSM1AVYo/zeKI1QkP+d7nEWIJZFMIFKBYqS/q2qz\niVTJg0koJG+0JHLMqzD5LneTcY38iQY0h3wHCLeGuhGDqg7IaddXjQw2VFz8Y1rs\nFWmyO2nMf3Bw0/PN0vZE/CQbwvBm3qpxeKfNea7TYK7CFAtxogDtPJhlQmEd8fgP\nrEMxsX4KoIE3VcveFEYiUP5knDaZHMxqxcWuwwDARnqCitr+N2n+X4QFNixfKaMq\nSm5/Mo55AgMBAAECggEAMcK3MHe3Ja3+nGsGzPgBsOeeRgBzMOoYLb92+K2nckpf\nex4lmgaej7bcqHqjVlTQ5A0tPUghYN95r8ZfgYVibMf3txrla0hwOKP5UugDOMg/\nhpJ8CNlzngrw6pAywb0f8/Xy3laD6YY/IEWyUoS6vd1ceLKSZsO3qW49oGLWbWaV\nr9yjTTySlvlWMniqDxe39MTMKkFbmSQMW/bJHEGUDdSR39ZEvsMQB7n0HPHBzlQd\n8GO+vLY4/blKMwkQgW1pG2sH4CMUphzzZGmrHLNf3ckOXGx6SWmQRJH1DUrLa8TQ\nVfNkdMDFqccXsLfxOBZaHPSg0VKpsQQVy0XQ3B3LQQKBgQDs2tl1YmEzbsTuLh/R\n08MWNjl5fCrA6uMQqQy9cRYXYQQ1+VicR3STHnZeJJ3G0yk7ory4hT8vVJH4LP47\nUR3LQka20c6mNNln7A5p/mRHORn+rITprrYCrpPowJmEFRPA6S8gBadRGqEFpQzH\nVSmMVSZSOMnPN6ddp1Sjb4K8FQKBgQDaR1EC/7fQ5Plue2p1prAnmTqzRfcKLYkU\nrWRJyeLL3a3WRF5KEJzunaUaIetpn4lbNGwsqLqAs3fGTcG77AsMwMXC9eLhoyAm\nFxt6XBm2pDvOfPJi4mL+K7qmK/iqrN6u4Pdw9jMMIHdU6GfJuEe6OVGUoQ6HE2Dv\nV8giKSMN1QKBgQCkrazQPqySVAu8Bnm9K9zSDrV7T+dx5l4lcUQYWw4fByckV89S\nKSRWPbHS1uaUHLDoc8d/C7XYtJYg1TeWCloKvnPoHIvvZ4NZC/khnOwf0QXP2ic3\nSm/mAXd5NqAGA5mOYRKQ0x13+GnIQO9XkFCo73MLa8x0tJ87MGJal+dv2QKBgHsV\nOdZCEgnGA+zLxPVAoBZELjiG3E2t7Z1uRJ3jLHMetnabKLwE8CkRVdcNh2yQ3GhE\ngDcSkdAe4ww8LmFkMbroPNu5wUzQqkEwSHtP0eQOafb+t8MQuxdt2xr2soqzXgIo\nsv7MpW5SJFgJkPTLaA7XYWw5ATMjt0ZfLmgs4CpdAoGAfxMHjIKYFvBKNbJqwHwz\nJiz0jlE3arsAKVmKnZiYAwStsFQxojwqkQuXAy1n0ImmBKL9LPRdAlBcG/hNsnQ8\nAQEGVDHVRpx3MVUTY6Bg1vJQrgy0NMhZWt+UtfzRQhit/60Qtm535PuHwdZf1Gte\nUOhujB23wqP5wAUwHLF7GCs=\n-----END PRIVATE KEY-----\n'
+  GEMINI_MODEL: 'gemini-1.5-flash'
 };
 
 // ============================================================
@@ -896,20 +883,17 @@ function animateLoadingSteps() {
 }
 
 // ============================================================
-// GEMINI REPORT GENERATION
+// REPORT GENERATION via Worker
 // ============================================================
 async function generateReport() {
   const prompt = buildPrompt();
-  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${CONFIG.GEMINI_MODEL}:generateContent?key=${CONFIG.GEMINI_API_KEY}`, {
+  const res = await fetch(`${CONFIG.WORKER_URL}/generate-report`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.7, maxOutputTokens: 2000 }
-    })
+    body: JSON.stringify({ prompt })
   });
   const data = await res.json();
-  return data?.candidates?.[0]?.content?.parts?.[0]?.text || 'Report generation failed.';
+  return data.report || 'Report generation failed.';
 }
 
 function buildPrompt() {
@@ -1003,146 +987,31 @@ Q15 Raw: "${a.q15}"
 }
 
 // ============================================================
-// SENDGRID EMAIL
+// SEND EMAIL via Worker
 // ============================================================
 async function sendReportEmail(reportText) {
-  const htmlReport = reportText.replace(/\n/g, '<br>').replace(/---/g, '<hr style="border-color:#e5e7eb;margin:24px 0;">');
-  const payload = {
-    personalizations: [{
-      to: [{ email: answers.email, name: answers.firstName }]
-    }],
-    from: { email: CONFIG.SENDGRID_FROM_EMAIL, name: CONFIG.SENDGRID_FROM_NAME },
-    subject: `Your Revenue Readiness Report is inside, ${answers.firstName}`,
-    content: [{
-      type: 'text/html',
-      value: `<div style="font-family:Georgia,serif;max-width:640px;margin:0 auto;padding:40px 24px;color:#1a1a2e;">
-        <div style="text-align:center;margin-bottom:32px;">
-          <div style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#6b7280;margin-bottom:8px;">Brand Craftsman</div>
-          <div style="width:40px;height:2px;background:#2563eb;margin:0 auto;"></div>
-        </div>
-        <h2 style="font-size:24px;font-weight:600;margin-bottom:8px;">Your Revenue Readiness Report is ready.</h2>
-        <p style="color:#6b7280;margin-bottom:32px;line-height:1.6;">Everything below is based specifically on your answers. Read through the full report and pay close attention to your leverage point section.</p>
-        <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:32px;margin-bottom:32px;line-height:1.8;">
-          ${htmlReport}
-        </div>
-        <div style="text-align:center;margin-top:32px;">
-          <a href="https://brandcraftsman.mambayk.com" style="display:inline-block;background:#2563eb;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:600;font-size:15px;">Book My Free Revenue Readiness Session</a>
-        </div>
-        <p style="text-align:center;font-size:12px;color:#9ca3af;margin-top:24px;">© 2026 Mambay, LLC. All Rights Reserved</p>
-      </div>`
-    }]
-  };
-
-  await fetch('https://api.sendgrid.com/v3/mail/send', {
+  await fetch(`${CONFIG.WORKER_URL}/send-email`, {
     method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${CONFIG.SENDGRID_API_KEY}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(payload)
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      to_email: answers.email,
+      to_name: answers.firstName,
+      report_html: reportText.replace(/\n/g, '<br>'),
+      subject: `Your Revenue Readiness Report is inside, ${answers.firstName}`
+    })
   });
 }
 
 // ============================================================
-// JWT HELPER — signs a Google service account JWT in browser
-// ============================================================
-async function getServiceAccountToken() {
-  const now = Math.floor(Date.now() / 1000);
-  const header = { alg: 'RS256', typ: 'JWT' };
-  const payload = {
-    iss: CONFIG.SA_CLIENT_EMAIL,
-    scope: 'https://www.googleapis.com/auth/spreadsheets.readonly',
-    aud: 'https://oauth2.googleapis.com/token',
-    exp: now + 3600,
-    iat: now
-  };
-
-  const b64 = obj => btoa(JSON.stringify(obj)).replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_');
-  const signingInput = `${b64(header)}.${b64(payload)}`;
-
-  // Import private key
-  const pemBody = CONFIG.SA_PRIVATE_KEY
-    .replace('-----BEGIN PRIVATE KEY-----', '')
-    .replace('-----END PRIVATE KEY-----', '')
-    .replace(/\n/g, '');
-  const binaryDer = Uint8Array.from(atob(pemBody), c => c.charCodeAt(0));
-  const cryptoKey = await crypto.subtle.importKey(
-    'pkcs8', binaryDer.buffer,
-    { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
-    false, ['sign']
-  );
-
-  const encoder = new TextEncoder();
-  const signatureBuffer = await crypto.subtle.sign(
-    'RSASSA-PKCS1-v1_5', cryptoKey, encoder.encode(signingInput)
-  );
-  const signature = btoa(String.fromCharCode(...new Uint8Array(signatureBuffer)))
-    .replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_');
-
-  const jwt = `${signingInput}.${signature}`;
-
-  // Exchange JWT for access token
-  const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: `grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=${jwt}`
-  });
-  const tokenData = await tokenRes.json();
-  return tokenData.access_token;
-}
-
-// ============================================================
-// GOOGLE SHEETS + CLICKUP SYNC
+// SYNC TO CLICKUP via Worker
 // ============================================================
 async function syncToClickUp(reportText) {
-  const email = answers.email;
-  let taskId = null;
-
-  // 1. Look up email in Google Sheet using service account JWT
-  try {
-    const accessToken = await getServiceAccountToken();
-    const range = encodeURIComponent(`${CONFIG.GOOGLE_SHEET_TAB}!A:K`);
-    const sheetRes = await fetch(
-      `https://sheets.googleapis.com/v4/spreadsheets/${CONFIG.GOOGLE_SHEET_ID}/values/${range}`,
-      { headers: { 'Authorization': `Bearer ${accessToken}` } }
-    );
-    const sheetData = await sheetRes.json();
-    const rows = sheetData.values || [];
-    const match = rows.find(row =>
-      row[CONFIG.GOOGLE_EMAIL_COL] &&
-      row[CONFIG.GOOGLE_EMAIL_COL].toLowerCase().trim() === email.toLowerCase().trim()
-    );
-    if (match) taskId = match[CONFIG.GOOGLE_ID_COL];
-    console.log('Sheet lookup:', match ? `Found task ${taskId}` : 'No match, will create new task');
-  } catch (e) {
-    console.warn('Sheet lookup failed:', e);
-  }
-
-  // 2. Extract admin summary from report
-  const adminBlock = extractAdminSummary(reportText);
-  const commentBody = buildClickUpComment(adminBlock);
-
-  // 3. Post comment or create new task
-  if (taskId) {
-    await postClickUpComment(taskId, commentBody);
-  } else {
-    const newTaskId = await createClickUpTask(commentBody);
-    if (newTaskId) console.log('New ClickUp task created:', newTaskId);
-  }
-}
-
-function extractAdminSummary(report) {
-  const match = report.match(/ADMIN SUMMARY[\s\S]*?---\s*$/m);
-  return match ? match[0] : report.slice(-800);
-}
-
-function buildClickUpComment(adminBlock) {
   const a = answers;
   const scored = [a.q4||3,a.q5||3,a.q6||3,a.q7||3,a.q8||3,a.q9||3,a.q10||3,a.q11||3];
   const avg = scored.reduce((s,v)=>s+v,0)/scored.length;
   const overall = Math.round((avg/5)*100);
 
-  return `🧪 REVENUE READINESS TEST SUBMISSION
+  const comment = `🧪 REVENUE READINESS TEST SUBMISSION
 ━━━━━━━━━━━━━━━━━━━━━━━━━━
 📊 OVERALL SCORE: ${overall}/100
 
@@ -1169,38 +1038,17 @@ SIGNALS
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━
 Submitted: ${new Date().toLocaleString()}`;
-}
 
-async function postClickUpComment(taskId, comment) {
-  await fetch(`https://api.clickup.com/api/v2/task/${taskId}/comment`, {
+  await fetch(`${CONFIG.WORKER_URL}/sync-clickup`, {
     method: 'POST',
-    headers: {
-      'Authorization': CONFIG.CLICKUP_API_TOKEN,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ comment_text: comment })
-  });
-}
-
-async function createClickUpTask(comment) {
-  const res = await fetch(`https://api.clickup.com/api/v2/list/${CONFIG.CLICKUP_LEADS_LIST_ID}/task`, {
-    method: 'POST',
-    headers: {
-      'Authorization': CONFIG.CLICKUP_API_TOKEN,
-      'Content-Type': 'application/json'
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      name: `${answers.firstName} — Revenue Readiness Test`,
-      description: comment,
-      status: 'Open'
+      email: a.email,
+      firstName: a.firstName,
+      comment,
+      answers: a
     })
   });
-  const data = await res.json();
-  if (data.id) {
-    await postClickUpComment(data.id, comment);
-    return data.id;
-  }
-  return null;
 }
 </script>
 </body>
